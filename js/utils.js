@@ -5,9 +5,15 @@ function renderBoard(mat, selector) {
   for (var i = 0; i < mat.length; i++) {
     strHTML += '<tr>';
     for (var j = 0; j < mat[0].length; j++) {
-      var isMine = mat[i][j].isMine;
       var className = 'cell' + i + '-' + j;
-      strHTML += `<td class="${className}">${isMine ? MINE : EMPTY}</td>`;
+      strHTML += `<td class="${className}">`;
+      var cell = mat[i][j];
+      if (cell.isMine) {
+        strHTML += MINE;
+      } else if (cell.minesAroundCount !== 0) {
+        strHTML += cell.minesAroundCount;
+      }
+      strHTML += `</td>`;
     }
     strHTML += '</tr>';
   }
