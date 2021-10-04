@@ -1,7 +1,7 @@
 'use strict';
 var gLevel = {
   size: 4,
-  mines: 3,
+  mines: 2,
 };
 
 var gGame = {
@@ -19,18 +19,16 @@ const FLAG = '🚩';
 const EMPTY = ' ';
 const EMPTY_CELL_AMOUNT = gLevel.size ** 2 - gLevel.mines;
 
-//initialize the game-------------------------
+//initialize the game--------------------------------------------------------------------------------
 function init() {
   gBoard = generateBoard(gLevel.size);
   setMinesOnBoard(gLevel.mines);
   updateNeighborsCount();
   renderBoard(gBoard, '.board-container');
-  // var a = document.querySelector('.cell0-0 .cover');
-  // debugger;
-  // a.classList.add('show');
+  gGame.isOn = true;
 }
 
-//create model board--------------------------
+//create model board--------------------------------------------------------------------------------
 function generateBoard(boardSize) {
   var board = [];
   for (var i = 0; i < boardSize; i++) {
@@ -47,7 +45,7 @@ function generateBoard(boardSize) {
   return board;
 }
 
-//put mines on board--------------------------
+//put mines on board--------------------------------------------------------------------------------
 function setMinesOnBoard(mineAmount) {
   for (var i = 0; i < mineAmount; i++) {
     var randLoc = getRandomLocation(gLevel.size);
@@ -59,7 +57,7 @@ function setMinesOnBoard(mineAmount) {
   }
 }
 
-//add neighbors count to every cell
+//add neighbors count to every cell-----------------------------------------------------------------
 function updateNeighborsCount() {
   for (var i = 0; i < gLevel.size; i++) {
     for (var j = 0; j < gLevel.size; j++) {
@@ -68,10 +66,9 @@ function updateNeighborsCount() {
   }
 }
 
-//counting neighbors
+//counting neighbors--------------------------------------------------------------------------------
 function countNeighbors(location, matLen) {
   var neighborsCount = 0;
-  // debugger;
   for (var i = location.i - 1; i <= location.i + 1; i++) {
     for (var j = location.j - 1; j <= location.j + 1; j++) {
       if (0 <= i && i < matLen && 0 <= j && j < matLen && gBoard[i][j].isMine) {
@@ -87,56 +84,100 @@ function countNeighbors(location, matLen) {
   return neighborsCount;
 }
 
-//handle cell left click
-function cellClick(ev, elCell, i, j) {
+//handle cell left click------------------------------------------------------------------------------
+function cellClick(ev, elCell, location) {
+  var currCell = gBoard[location.i][location.j];
   //identify mouse button
+  console.clear();
+  console.log(gGame);
   switch (ev.which) {
     case 1: {
-      console.log('left click');
-      //update model
-      if (gBoard[i][j].isMine) {
-        gGame.lifes--;
+      if (currCell.minesAroundCount === 0 && !currCell.isMine) {
+        recurseOpening(location);
+      } else if (currCell.isMine) {
+        removeLife(currCell);
       } else {
         gGame.shownCount++;
       }
-      //update DOM
+      currCell.isShown = true;
       elCell.classList.add('show');
       break;
     }
     case 3: {
-      console.log('right click');
-      //update model
-      if (gBoard[i][j].isMine) {
-        gGame.markedCount++;
-      }
-
-      //update DOM
-      elCell.innerHTML = `<p>${FLAG}<p>`;
+      //right click
+      toggleFlag(elCell, currCell);
       break;
     }
     default:
       console.log('unknown event click:', ev.which);
   }
-
-  // debugger;
   checkEndGame();
 
   //check cell content
+  console.log(gGame);
 }
 
-//handle cell right click
-function cellRightClick(elCell, i, j) {
-  console.log('right clicked');
-}
-
-//check if game end
+//check if game end--------------------------------------------------------------------------------
 function checkEndGame() {
-  // debugger;
   if (gGame.lifes === 0) {
     //lose
     console.log('loss');
+    gGame.isOn = false;
   } else if (gGame.markedCount === gLevel.mines && gGame.shownCount === EMPTY_CELL_AMOUNT) {
     //win
     console.log('win');
+    gGame.isOn = false;
   }
+}
+
+//open all empty cells, recursive-------------------------------------------------------------------
+function recurseOpening(location) {
+  var cell = document.querySelector(`.cell${location.i}-${location.j}`);
+  cell.classList.add('show');
+  gBoard[location.i][location.j].isShown = true;
+  gGame.shownCount++;
+
+  //stop condition
+  if (gBoard[location.i][location.j].minesAroundCount) {
+    return;
+  }
+
+  for (var i = location.i - 1; i <= location.i + 1; i++) {
+    for (var j = location.j - 1; j <= location.j + 1; j++) {
+      if (0 <= i && i < gLevel.size && 0 <= j && j < gLevel.size && !gBoard[i][j].isShown) {
+        if (location.i !== i || location.j !== j) {
+          recurseOpening({ i, j });
+        }
+      }
+    }
+  }
+}
+
+//toggle flag on cell------------------------------------------------------------------------------
+function toggleFlag(elCell, bCell) {
+  if (!elCell.innerHTML) {
+    elCell.innerHTML = `<p>${FLAG}<p>`;
+    gGame.markedCount++;
+    bCell.isMarked = true;
+  } else {
+    elCell.innerHTML = ``;
+    gGame.markedCount--;
+    bCell.isMarked = false;
+  }
+}
+
+//show cell----------------------------------------------------------------------------------------
+function showCell(elCell, bCell) {
+  //TODO fix
+  bCell.isShown = true;
+  gGame.shownCount++;
+  elCell.classList.add('show');
+}
+//to all work when press on mine------------------------------------------------------------------
+function removeLife(cell) {
+  //TODO fix
+  gGame.lifes--;
+  gGame.shownCount--;
+  gGame.markedCount++;
+  cell.isMarked = true;
 }
