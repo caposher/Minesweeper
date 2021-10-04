@@ -1,36 +1,60 @@
 * {
   box-sizing: border-box;
-  margin: auto;
-  margin-top: 20px;
 }
 
 .game-container {
   background-color: blueviolet;
   text-align: center;
   margin: auto;
-  margin-top: 100px;
+  margin-top: 60px;
   padding: 20px;
-  width: 1000px;
+  padding-bottom: 40px;
+  width: 600px;
+  border-radius: 15px;
+  box-shadow: 10px 10px 15px;
+}
+
+.game-container h1 {
+  font-size: 65px;
+  font-family: sans-serif;
+  font-weight: bold;
+  text-decoration: underline #ff5202;
+  margin-bottom: 10px;
 }
 
 .game-container button {
-  width: 50px;
-  height: 30px;
+  margin-top: 15px;
+  padding: 5px;
+  width: 56px;
+  background-color: midnightblue;
+}
+
+.game-container h3 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-family: monospace;
+  font-size: 25px;
 }
 
 .board-container {
-  text-align: center;
-  padding: 10px;
-  margin-bottom: 20px;
+  display: inline-block;
+  margin: 0 auto;
 }
 
-table td {
-  margin: auto;
-  position: relative;
-  width: 50px;
-  height: 50px;
-  padding: 10px;
+.board-container table {
+  border: 3px solid #ff5202;
+  border-radius: 5px;
+  border-spacing: 1px;
+}
+
+.board-container table td {
+  font-size: 15px;
+  font-weight: bold;
+  font-family: monospace;
+  width: 40px;
+  height: 40px;
   background-color: hsl(240, 100%, 77%);
+  position: relative;
 }
 
 .cover {
@@ -45,7 +69,7 @@ table td {
 }
 
 .cover p {
-  margin-top: 13px;
+  margin-top: 10px;
   margin-left: 5px;
 }
 
