@@ -9,15 +9,16 @@ var gGame = {
   lifes: 3,
   shownCount: 0,
   markedCount: 0,
+  emptyCellAmount: gLevel.size ** 2 - gLevel.mines,
   secsPassed: 0,
 };
 
 var gBoard = null;
+var gTimerInervalId = null;
 
 const MINE = '💣';
 const FLAG = '🚩';
 const EMPTY = ' ';
-const EMPTY_CELL_AMOUNT = gLevel.size ** 2 - gLevel.mines;
 
 //initialize the game--------------------------------------------------------------------------------
 function init() {
@@ -26,6 +27,26 @@ function init() {
   updateNeighborsCount();
   renderBoard(gBoard, '.board-container');
   gGame.isOn = true;
+}
+
+//reset the game--------------------------------------------------------------------------------
+function resetGame(elDifficalty) {
+  gBoard = null;
+  gGame.isOn = false;
+  gGame.lifes = 3;
+  gGame.shownCount = 0;
+  gGame.markedCount = 0;
+
+  if (elDifficalty) {
+    var diffVals = elDifficalty.value.split('-');
+    gLevel.size = +diffVals[0];
+    gLevel.mines = +diffVals[1];
+  }
+
+  clearInterval(gTimerInervalId);
+  gTimerInervalId = null;
+
+  init();
 }
 
 //create model board--------------------------------------------------------------------------------
@@ -86,48 +107,55 @@ function countNeighbors(location, matLen) {
 
 //handle cell left click------------------------------------------------------------------------------
 function cellClick(ev, elCell, location) {
-  var currCell = gBoard[location.i][location.j];
-  //identify mouse button
-  console.clear();
-  console.log(gGame);
-  switch (ev.which) {
-    case 1: {
-      if (currCell.minesAroundCount === 0 && !currCell.isMine) {
-        recurseOpening(location);
-      } else if (currCell.isMine) {
-        removeLife(currCell);
-      } else {
-        gGame.shownCount++;
-      }
-      currCell.isShown = true;
-      elCell.classList.add('show');
-      break;
-    }
-    case 3: {
-      //right click
-      toggleFlag(elCell, currCell);
-      break;
-    }
-    default:
-      console.log('unknown event click:', ev.which);
+  if (gGame.isOn && !gTimerInervalId) {
+    gTimerInervalId = setInterval(timer, 1000);
   }
-  checkEndGame();
-
-  //check cell content
-  console.log(gGame);
+  if (gGame.isOn) {
+    var currCell = gBoard[location.i][location.j];
+    //identify mouse button
+    switch (ev.which) {
+      case 1: {
+        if (currCell.minesAroundCount === 0 && !currCell.isMine) {
+          recurseOpening(location);
+        } else if (currCell.isMine) {
+          removeLife(currCell);
+        } else {
+          gGame.shownCount++;
+        }
+        currCell.isShown = true;
+        elCell.classList.add('show');
+        break;
+      }
+      case 3: {
+        //right click
+        toggleFlag(elCell, currCell);
+        break;
+      }
+      default:
+        console.log('unknown event click:', ev.which);
+    }
+    checkEndGame();
+  }
 }
 
 //check if game end--------------------------------------------------------------------------------
 function checkEndGame() {
   if (gGame.lifes === 0) {
     //lose
-    console.log('loss');
-    gGame.isOn = false;
-  } else if (gGame.markedCount === gLevel.mines && gGame.shownCount === EMPTY_CELL_AMOUNT) {
+    endGame('loss');
+  } else if (gGame.markedCount === gLevel.mines && gGame.shownCount === gGame.emptyCellAmount) {
     //win
-    console.log('win');
-    gGame.isOn = false;
+    endGame('win');
   }
+}
+
+//end the game--------------------------------------------------------------------------------------
+function endGame(text) {
+  console.log(text);
+  gGame.isOn = false;
+
+  clearInterval(gTimerInervalId);
+  gTimerInervalId = null;
 }
 
 //open all empty cells, recursive-------------------------------------------------------------------
@@ -173,6 +201,7 @@ function showCell(elCell, bCell) {
   gGame.shownCount++;
   elCell.classList.add('show');
 }
+
 //to all work when press on mine------------------------------------------------------------------
 function removeLife(cell) {
   //TODO fix
@@ -180,4 +209,12 @@ function removeLife(cell) {
   gGame.shownCount--;
   gGame.markedCount++;
   cell.isMarked = true;
+}
+
+//timer --------------------------------------------------------------------------------------------
+function timer() {
+  gGame.secsPassed++;
+  var txt = `${gGame.secsPassed}`.padStart(3, '0');
+  var elTimer = document.querySelector('.timer');
+  elTimer.innerText = txt;
 }
