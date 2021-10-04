@@ -5,8 +5,8 @@ const FALG = '🚩';
 const EMPTY = ' ';
 
 var gLevel = {
-  size: 4,
-  mines: 5,
+  size: 12,
+  mines: 32,
 };
 
 var gGame = {

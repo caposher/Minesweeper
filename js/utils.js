@@ -6,7 +6,7 @@ function renderBoard(mat, selector) {
     strHTML += '<tr>';
     for (var j = 0; j < mat[0].length; j++) {
       var className = 'cell' + i + '-' + j;
-      strHTML += `<td class="${className}">`;
+      strHTML += `<td class="${className}"><div class="hidden"></div>`;
       var cell = mat[i][j];
       if (cell.isMine) {
         strHTML += MINE;
