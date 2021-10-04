@@ -5,8 +5,10 @@ function renderBoard(mat, selector) {
   for (var i = 0; i < mat.length; i++) {
     strHTML += '<tr>';
     for (var j = 0; j < mat[0].length; j++) {
-      var className = 'cell' + i + '-' + j;
-      strHTML += `<td class="${className}"><div class="hidden"></div>`;
+      //create cell
+      var className = `cell-${i},${j}`;
+      strHTML += `<td ><div class="${className} cover" onMouseup="cellClick(event,this,${i},${j})" oncontextmenu="return false;"></div>`;
+
       var cell = mat[i][j];
       if (cell.isMine) {
         strHTML += MINE;

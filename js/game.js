@@ -1,16 +1,12 @@
 'use strict';
-
-const MINE = '💣';
-const FALG = '🚩';
-const EMPTY = ' ';
-
 var gLevel = {
-  size: 12,
-  mines: 32,
+  size: 4,
+  mines: 3,
 };
 
 var gGame = {
   isOn: false,
+  lifes: 3,
   shownCount: 0,
   markedCount: 0,
   secsPassed: 0,
@@ -18,12 +14,20 @@ var gGame = {
 
 var gBoard = null;
 
+const MINE = '💣';
+const FLAG = '🚩';
+const EMPTY = ' ';
+const EMPTY_CELL_AMOUNT = gLevel.size ** 2 - gLevel.mines;
+
 //initialize the game-------------------------
 function init() {
   gBoard = generateBoard(gLevel.size);
   setMinesOnBoard(gLevel.mines);
   updateNeighborsCount();
   renderBoard(gBoard, '.board-container');
+  // var a = document.querySelector('.cell0-0 .cover');
+  // debugger;
+  // a.classList.add('show');
 }
 
 //create model board--------------------------
@@ -81,4 +85,58 @@ function countNeighbors(location, matLen) {
     }
   }
   return neighborsCount;
+}
+
+//handle cell left click
+function cellClick(ev, elCell, i, j) {
+  //identify mouse button
+  switch (ev.which) {
+    case 1: {
+      console.log('left click');
+      //update model
+      if (gBoard[i][j].isMine) {
+        gGame.lifes--;
+      } else {
+        gGame.shownCount++;
+      }
+      //update DOM
+      elCell.classList.add('show');
+      break;
+    }
+    case 3: {
+      console.log('right click');
+      //update model
+      if (gBoard[i][j].isMine) {
+        gGame.markedCount++;
+      }
+
+      //update DOM
+      elCell.innerHTML = `<p>${FLAG}<p>`;
+      break;
+    }
+    default:
+      console.log('unknown event click:', ev.which);
+  }
+
+  // debugger;
+  checkEndGame();
+
+  //check cell content
+}
+
+//handle cell right click
+function cellRightClick(elCell, i, j) {
+  console.log('right clicked');
+}
+
+//check if game end
+function checkEndGame() {
+  // debugger;
+  if (gGame.lifes === 0) {
+    //lose
+    console.log('loss');
+  } else if (gGame.markedCount === gLevel.mines && gGame.shownCount === EMPTY_CELL_AMOUNT) {
+    //win
+    console.log('win');
+  }
 }
