@@ -7,7 +7,14 @@
     <title>Mine Sweeper</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body>
-    <script src="js/main.js"></script>
+  <body onload="init()">
+    <script src="js/utils.js"></script>
+    <script src="js/game.js"></script>
+    <div class="game-container">
+      <h2>Mine Blowing</h2>
+      <button onclick="resetGame()">😁</button>
+      <div class="board-container"></div>
+      <h3>timer:<span>0:00</span></h3>
+    </div>
   </body>
 </html>

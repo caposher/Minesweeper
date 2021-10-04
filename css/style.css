@@ -1,3 +1,31 @@
-body {
-  background-color: black;
+* {
+  box-sizing: border-box;
+  margin: auto;
+  margin-top: 20px;
+}
+
+.game-container {
+  background-color: blueviolet;
+  text-align: center;
+  margin-top: 100px;
+  padding: 20px;
+  width: 1000px;
+}
+
+.game-container button {
+  width: 50px;
+  height: 30px;
+}
+
+.board-container {
+  background-color: hsl(160, 100%, 87%);
+  text-align: center;
+  width: 500px;
+}
+
+table td {
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  background-color: hsl(240, 100%, 77%);
 }
