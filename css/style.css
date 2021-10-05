@@ -3,7 +3,7 @@
 }
 
 .game-container {
-  background-color: blueviolet;
+  background-color: hsl(271, 76%, 53%);
   text-align: center;
   margin: auto;
   margin-top: 60px;
@@ -25,7 +25,7 @@
   font-size: 65px;
   font-family: sans-serif;
   font-weight: bold;
-  text-decoration: underline #ff5202;
+  text-decoration: underline hsl(15, 100%, 50%);
   margin-bottom: 10px;
   margin-top: 30px;
 }
@@ -36,11 +36,20 @@
   width: 45px;
 }
 
-.game-container button {
-  margin-top: 15px;
-  padding: 5px;
-  width: 56px;
-  background-color: midnightblue;
+.smiley:hover {
+  border: 1px solid hsl(271, 76%, 43%);
+  border-radius: 40%;
+}
+
+.smiley:active {
+  background-color: hsl(271, 46%, 43%);
+  border: 1px solid hsl(271, 76%, 43%);
+  border-radius: 40%;
+}
+
+.heart {
+  width: 15px;
+  text-align: center;
 }
 
 .game-container h3 {
@@ -53,10 +62,12 @@
 .board-container {
   display: inline-block;
   margin: 0 auto;
+  background-color: black;
+  border-radius: 5px;
 }
 
 .board-container table {
-  border: 3px solid #ff5202;
+  border: 3px solid hsl(34, 100%, 50%);
   border-radius: 5px;
   border-spacing: 1px;
 }
@@ -67,12 +78,14 @@
   font-family: monospace;
   width: 40px;
   height: 40px;
-  background-color: hsl(240, 100%, 77%);
+  background-color: hsl(240, 100%, 87%);
   position: relative;
+  border-width: 0px;
 }
 
 .cover {
-  background-color: #ff5202a6;
+  background-color: hsla(34, 100%, 50%, 0.459);
+  box-shadow: inset 0px 0px 5px 0px hsl(19, 100%, 10%);
   position: absolute;
   margin: unset;
   top: 0px;
@@ -80,6 +93,9 @@
   width: 100%;
   height: 100%;
   z-index: 1;
+}
+.cover:hover {
+  box-shadow: inset 0px 0px 5px 1px hsl(19, 100%, 90%);
 }
 
 .cover p {
@@ -94,7 +110,10 @@
 }
 
 .hint-cell {
-  background-color: #ffa602c5;
+  background-color: hsl(15, 100%, 50%);
+  background-image: url('img/unusedHint.png');
+  background-position: center;
+  background-repeat: none;
   z-index: 2;
 }
 

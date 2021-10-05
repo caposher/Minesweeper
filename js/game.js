@@ -25,7 +25,6 @@ const HINT_TIME = 1000;
 function init() {
   gBoard = generateBoard(gLevel.size);
   renderBoard(gBoard, '.board-container');
-  localStorage.setItem('score', 100);
   renderBestScore();
   gGame.isOn = true;
 }
@@ -40,7 +39,7 @@ function resetGame(elDifficalty) {
   gGame.secsPassed = 0;
   document.querySelector('.timer').innerText = '000';
   document.querySelector('.smiley').src = 'img/start.png';
-  clearHintSymbols();
+  clearDomElements();
 
   if (elDifficalty) {
     var diffVals = elDifficalty.value.split('-');
@@ -77,8 +76,15 @@ function generateBoard(boardSize) {
 function setMinesOnBoard(mineAmount, location) {
   for (var i = 0; i < mineAmount; i++) {
     var randLoc = getRandomLocation(gLevel.size);
-    while (gBoard[randLoc.i][randLoc.j].isMine || (location.i === randLoc.i && location.j === randLoc.j)) {
-      //find empty location to put mine
+    while (
+      gBoard[randLoc.i][randLoc.j].isMine ||
+      (location.i === randLoc.i && location.j === randLoc.j) ||
+      randLoc.i === location.i + 1 ||
+      randLoc.i === location.i - 1 ||
+      randLoc.j === location.j + 1 ||
+      randLoc.j === location.j - 1
+    ) {
+      //find empty location to put mine and first press land on empty block
       randLoc = getRandomLocation(gLevel.size);
     }
     gBoard[randLoc.i][randLoc.j].isMine = true;
@@ -227,6 +233,14 @@ function showCell(elCell, location) {
 function removeLife() {
   gGame.lifes--;
   document.querySelector('.smiley').src = `img/${gGame.lifes}.png`;
+  var elHearts = document.querySelectorAll('.heart');
+  for (var i = elHearts.length - 1; i >= 0; i--) {
+    if (!elHearts[i].classList.contains('inactive')) {
+      elHearts[i].classList.add('inactive');
+      elHearts[i].src = 'img/heartInactive.png';
+      break;
+    }
+  }
 }
 
 //timer --------------------------------------------------------------------------------------------

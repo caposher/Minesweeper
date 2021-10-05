@@ -26,15 +26,6 @@ function getHintLocation() {
   return location;
 }
 
-//clear hints imgs-------------------------------------------------------------------------------------
-function clearHintSymbols() {
-  var elHints = document.querySelectorAll('.hint-img');
-  for (var i = 0; i < elHints.length; i++) {
-    elHints[i].src = 'img/unusedHint.png';
-    elHints[i].classList.remove('used');
-  }
-}
-
 //show hint cells---------------------------------------------------------------------------------------
 function showHint(location) {
   var LastStatus = [];

@@ -54,3 +54,15 @@ function renderBestScore() {
     console.log('cant store on local storage');
   }
 }
+
+//clear DOM  imgs-----------------------------------------------------------------------
+function clearDomElements() {
+  var elHints = document.querySelectorAll('.hint-img');
+  var elHearts = document.querySelectorAll('.heart');
+  for (var i = 0; i < elHints.length; i++) {
+    elHints[i].src = 'img/unusedHint.png';
+    elHearts[i].src = 'img/heartActive.png';
+    elHints[i].classList.remove('used');
+    elHearts[i].classList.remove('inactive');
+  }
+}
