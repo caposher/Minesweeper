@@ -19,6 +19,7 @@ var gTimerInervalId = null;
 const MINE = '💣';
 const FLAG = '🚩';
 const EMPTY = ' ';
+const HINT_TIME = 1000;
 
 //initialize the game--------------------------------------------------------------------------------
 function init() {
@@ -123,7 +124,7 @@ function cellClick(ev, elCell, location) {
       case 1: {
         if (!currCell.isMarked) {
           if (currCell.isHint) {
-            console.log('yes');
+            showHint(location);
           } else if (currCell.isMine) {
             removeLife();
             showCell(elCell, location);
@@ -263,3 +264,30 @@ function clearHintSymbols() {
 }
 
 //show hint cells---------------------------------------------------------------------------------------
+function showHint(location) {
+  var LastStatus = [];
+  for (var i = location.i - 1; i <= location.i + 1; i++) {
+    for (var j = location.j - 1; j <= location.j + 1; j++) {
+      if (0 <= i && i < gLevel.size && 0 <= j && j < gLevel.size) {
+        LastStatus.push(gBoard[i][j].isShown);
+        gBoard[i][j].isShown = true;
+        document.querySelector(`.cell${i}-${j}`).classList.add('show');
+      }
+    }
+  }
+
+  setTimeout(hideHint, HINT_TIME, location, LastStatus);
+}
+
+function hideHint(location, lastStatus) {
+  for (var i = location.i - 1; i <= location.i + 1; i++) {
+    for (var j = location.j - 1; j <= location.j + 1; j++) {
+      if (0 <= i && i < gLevel.size && 0 <= j && j < gLevel.size) {
+        gBoard[i][j].isShown = lastStatus.shift();
+        document.querySelector(`.cell${i}-${j}`).classList.remove('show');
+      }
+    }
+  }
+  gBoard[location.i][location.j].isHint = false;
+  document.querySelector(`.cell${location.i}-${location.j}`).classList.remove('hint-cell');
+}
