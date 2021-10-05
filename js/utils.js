@@ -34,3 +34,23 @@ function getRandomInt(min, max) {
 function getRandomLocation(length) {
   return { i: getRandomInt(0, length), j: getRandomInt(0, length) };
 }
+
+//save best time score --------------------------------------------------------------
+function saveBestScore() {
+  var gameTime = +document.querySelector('.timer').innerText;
+  var bestScore = +localStorage.getItem('score');
+  if (bestScore > gameTime) {
+    localStorage.setItem('score', gameTime);
+    renderBestScore();
+  }
+}
+
+//render best time score --------------------------------------------------------------
+function renderBestScore() {
+  if (typeof Storage !== 'undefined') {
+    var bestScore = localStorage.getItem('score');
+    document.querySelector('.score').innerText = bestScore ? bestScore.padStart(3, '0') : '000';
+  } else {
+    console.log('cant store on local storage');
+  }
+}

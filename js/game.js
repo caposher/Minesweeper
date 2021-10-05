@@ -25,6 +25,8 @@ const HINT_TIME = 1000;
 function init() {
   gBoard = generateBoard(gLevel.size);
   renderBoard(gBoard, '.board-container');
+  localStorage.setItem('score', 100);
+  renderBestScore();
   gGame.isOn = true;
 }
 
@@ -173,6 +175,7 @@ function endGame(stat) {
 
   clearInterval(gTimerInervalId);
   gTimerInervalId = null;
+  if (stat === 'win') saveBestScore();
 }
 
 //open all empty cells, recursive-------------------------------------------------------------------
