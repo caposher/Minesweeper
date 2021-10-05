@@ -51,6 +51,12 @@ body {
 .top-list-container li p {
   margin: unset;
 }
+label {
+  font-size: 13px;
+  font-family: system-ui;
+  font-weight: bold;
+  margin-right: 5px;
+}
 
 button {
   width: 100px;
@@ -92,6 +98,7 @@ button:hover {
 .heart {
   width: 15px;
   text-align: center;
+  margin-bottom: 3px;
 }
 
 .game-container h3 {
@@ -153,7 +160,7 @@ button:hover {
 
 .hint-img {
   width: 40px;
-  margin-top: 5px;
+  margin-top: 10px;
   margin-right: -5px;
 }
 
