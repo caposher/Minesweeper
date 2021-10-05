@@ -22,6 +22,12 @@
   margin-bottom: 10px;
 }
 
+.smiley {
+  margin-top: 5px;
+  padding: 5px;
+  width: 45px;
+}
+
 .game-container button {
   margin-top: 15px;
   padding: 5px;
@@ -30,7 +36,7 @@
 }
 
 .game-container h3 {
-  margin-top: 5px;
+  margin-top: -3px;
   margin-bottom: 5px;
   font-family: monospace;
   font-size: 25px;
@@ -71,6 +77,17 @@
 .cover p {
   margin-top: 10px;
   margin-left: 5px;
+}
+
+.hint-img {
+  width: 40px;
+  margin-top: 5px;
+  margin-right: -5px;
+}
+
+.hint-cell {
+  background-color: #ffa602c5;
+  z-index: 2;
 }
 
 .show {

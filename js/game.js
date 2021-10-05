@@ -36,6 +36,10 @@ function resetGame(elDifficalty) {
   gGame.lifes = 3;
   gGame.shownCount = 0;
   gGame.markedCount = 0;
+  gGame.secsPassed = 0;
+  document.querySelector('.timer').innerText = '000';
+  document.querySelector('.smiley').src = 'img/start.png';
+  clearHintSymbols();
 
   if (elDifficalty) {
     var diffVals = elDifficalty.value.split('-');
@@ -61,6 +65,7 @@ function generateBoard(boardSize) {
         isShown: false,
         isMine: false,
         isMarked: false,
+        isHint: false,
       };
     }
   }
@@ -117,7 +122,9 @@ function cellClick(ev, elCell, location) {
     switch (ev.which) {
       case 1: {
         if (!currCell.isMarked) {
-          if (currCell.isMine) {
+          if (currCell.isHint) {
+            console.log('yes');
+          } else if (currCell.isMine) {
             removeLife();
             showCell(elCell, location);
           } else if (currCell.minesAroundCount === 0) {
@@ -155,8 +162,8 @@ function checkEndGame() {
 }
 
 //end the game--------------------------------------------------------------------------------------
-function endGame(text) {
-  console.log(text);
+function endGame(stat) {
+  document.querySelector('.smiley').src = `img/${stat}.png`;
   gGame.isOn = false;
 
   clearInterval(gTimerInervalId);
@@ -209,9 +216,9 @@ function showCell(elCell, location) {
 }
 
 //to all work when press on mine------------------------------------------------------------------
-function removeLife(cell) {
-  //TODO fix
+function removeLife() {
   gGame.lifes--;
+  document.querySelector('.smiley').src = `img/${gGame.lifes}.png`;
 }
 
 //timer --------------------------------------------------------------------------------------------
@@ -221,3 +228,38 @@ function timer() {
   var elTimer = document.querySelector('.timer');
   elTimer.innerText = txt;
 }
+
+//handle logic hor hint------------------------------------------------------------------------------
+function hintClick(elImg) {
+  if (!elImg.classList.contains('used')) {
+    elImg.classList.add('used');
+    elImg.src = 'img/usedHint.png';
+    var hintLocation = getHintLocation();
+    gBoard[hintLocation.i][hintLocation.j].isHint = true;
+    document.querySelector(`.cell${hintLocation.i}-${hintLocation.j}`).classList.add('hint-cell');
+  }
+}
+
+//find cell contain mine------------------------------------------------------------------------------
+function getHintLocation() {
+  var location = getRandomLocation(gLevel.size);
+  var cell = gBoard[location.i][location.j];
+  var boardSize = gLevel.size ** 2;
+
+  for (var k = 0; k < boardSize && cell.isShown; k++) {
+    location = getRandomLocation(gLevel.size);
+    cell = gBoard[location.i][location.j];
+  }
+  return location;
+}
+
+//clear hints imgs-------------------------------------------------------------------------------------
+function clearHintSymbols() {
+  var elHints = document.querySelectorAll('.hint-img');
+  for (var i = 0; i < elHints.length; i++) {
+    elHints[i].src = 'img/unusedHint.png';
+    elHints[i].classList.remove('used');
+  }
+}
+
+//show hint cells---------------------------------------------------------------------------------------

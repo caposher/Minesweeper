@@ -8,7 +8,7 @@ function renderBoard(mat, selector) {
       //create cell
       var className = `cell${i}-${j}`;
       strHTML += `<td oncontextmenu="return false;">
-      <div class="${className} cover" onMouseup="cellClick(event,this,{i:${i},j:${j}})" oncontextmenu="return false;"></div>`;
+      <div class="${className} cover " onMouseup="cellClick(event,this,{i:${i},j:${j}})" oncontextmenu="return false;"></div>`;
 
       var cell = mat[i][j];
       if (cell.isMine) {
