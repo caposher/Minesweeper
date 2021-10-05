@@ -16,7 +16,18 @@
       >
       <label> <input type="radio" name="difficult" value="8-12" onclick="resetGame(this)" />Medium</label>
       <label> <input type="radio" name="difficult" value="12-30" onclick="resetGame(this)" />Expert</label><br />
-      <img class="smiley" src="img/start.png" onclick="resetGame()" /><br />
+      <ul class="top-list-container">
+        <li>
+          <button class="safe-click" onclick="safeClick()">Safe Click [<span class="safe-num">3</span>]</button>
+        </li>
+        <li>
+          <img class="smiley" src="img/start.png" onclick="resetGame()" />
+        </li>
+        <li>
+          <button class="undo-click" " onclick="safeClick()">TODO UNDO</button>
+        </li>
+      </ul>
+      <br />
       <img class="heart" src="img/heartActive.png" />
       <img class="heart" src="img/heartActive.png" />
       <img class="heart" src="img/heartActive.png" />
@@ -30,6 +41,7 @@
       <img class="hint-img" src="img/unusedHint.png" onclick="hintClick(this)" />
       <script src="js/utils.js"></script>
       <script src="js/hint.js"></script>
+      <script src="js/safeClick.js"></script>
       <script src="js/game.js"></script>
     </div>
   </body>

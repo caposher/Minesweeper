@@ -8,6 +8,7 @@ var gLevel = {
 var gGame = {
   isOn: false,
   lifes: 3,
+  safeLocation: 3,
   shownCount: 0,
   markedCount: 0,
   secsPassed: 0,
@@ -20,6 +21,7 @@ const MINE = '💣';
 const FLAG = '🏴';
 const EMPTY = ' ';
 const HINT_TIME = 1000;
+const SAFE_TIME = 3000;
 
 //initialize the game--------------------------------------------------------------------------------
 function init() {
@@ -34,6 +36,7 @@ function resetGame(elDifficalty) {
   gBoard = null;
   gGame.isOn = false;
   gGame.lifes = 3;
+  gGame.safeLocation = 3;
   gGame.shownCount = 0;
   gGame.markedCount = 0;
   gGame.secsPassed = 0;

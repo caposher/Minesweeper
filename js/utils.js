@@ -72,3 +72,16 @@ function clearDomElements() {
     elHearts[i].classList.remove('inactive');
   }
 }
+
+//find covered cell ------------------------------------------------------------------------------
+function getCoveredLocation() {
+  var location = getRandomLocation(gLevel.size);
+  var cell = gBoard[location.i][location.j];
+  var boardSize = gLevel.size ** 2;
+
+  for (var k = 0; k < boardSize && cell.isShown; k++) {
+    location = getRandomLocation(gLevel.size);
+    cell = gBoard[location.i][location.j];
+  }
+  return location;
+}

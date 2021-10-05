@@ -6,24 +6,11 @@ function hintClick(elImg) {
     if (!elImg.classList.contains('used')) {
       elImg.classList.add('used');
       elImg.src = 'img/usedHint.png';
-      var hintLocation = getHintLocation();
+      var hintLocation = getCoveredLocation();
       gBoard[hintLocation.i][hintLocation.j].isHint = true;
       document.querySelector(`.cell${hintLocation.i}-${hintLocation.j}`).classList.add('hint-cell');
     }
   }
-}
-
-//find cell contain mine------------------------------------------------------------------------------
-function getHintLocation() {
-  var location = getRandomLocation(gLevel.size);
-  var cell = gBoard[location.i][location.j];
-  var boardSize = gLevel.size ** 2;
-
-  for (var k = 0; k < boardSize && cell.isShown; k++) {
-    location = getRandomLocation(gLevel.size);
-    cell = gBoard[location.i][location.j];
-  }
-  return location;
 }
 
 //show hint cells---------------------------------------------------------------------------------------
@@ -42,6 +29,7 @@ function showHint(location) {
   setTimeout(hideHint, HINT_TIME, location, LastStatus);
 }
 
+//hide hint cells---------------------------------------------------------------------------------------
 function hideHint(location, lastStatus) {
   for (var i = location.i - 1; i <= location.i + 1; i++) {
     for (var j = location.j - 1; j <= location.j + 1; j++) {
