@@ -31,7 +31,6 @@ function showHint(location) {
 
 //hide hint cells---------------------------------------------------------------------------------------
 function hideHint(location, lastStatus) {
-  //   debugger;
   for (var i = location.i - 1; i <= location.i + 1; i++) {
     for (var j = location.j - 1; j <= location.j + 1; j++) {
       if (0 <= i && i < gLevel.size && 0 <= j && j < gLevel.size) {

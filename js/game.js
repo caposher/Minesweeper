@@ -14,14 +14,20 @@ var gGame = {
   secsPassed: 0,
 };
 
-var gBoard = null;
 var gTimerInervalId = null;
+var gInProgressTmo = null;
+var gBoard = null;
+var gHistoryModel = [];
+var gHistoryDOM = [];
+var gHistoryGameParm = [];
+var gHistoryEnable = true;
 
 const MINE = '💣';
 const FLAG = '🏴';
 const EMPTY = ' ';
 const HINT_TIME = 1000;
 const SAFE_TIME = 3000;
+const H_INPROGRESS_TIME = 100;
 
 //initialize the game--------------------------------------------------------------------------------
 function init() {
@@ -40,6 +46,10 @@ function resetGame(elDifficalty) {
   gGame.shownCount = 0;
   gGame.markedCount = 0;
   gGame.secsPassed = 0;
+  gHistoryModel = [];
+  gHistoryDOM = [];
+  gHistoryGameParm = [];
+
   document.querySelector('.timer').innerText = '000';
   document.querySelector('.smiley').src = 'img/start.png';
   clearDomElements();
@@ -53,6 +63,9 @@ function resetGame(elDifficalty) {
 
   clearInterval(gTimerInervalId);
   gTimerInervalId = null;
+  clearTimeout(gInProgressTmo);
+  gInProgressTmo = null;
+  gHistoryEnable = true;
 
   init();
 }
@@ -132,6 +145,11 @@ function cellClick(ev, elCell, location) {
     gTimerInervalId = setInterval(timer, 1000);
   }
   if (gGame.isOn) {
+    //save history
+    gHistoryModel.push(duplicateMat(gBoard));
+    gHistoryDOM.push(document.querySelector('.game-container').innerHTML);
+    gHistoryGameParm.push({ ...gGame });
+
     var currCell = gBoard[location.i][location.j];
     //identify mouse button
     switch (ev.which) {
@@ -252,4 +270,20 @@ function timer() {
   var txt = `${gGame.secsPassed}`.padStart(3, '0');
   var elTimer = document.querySelector('.timer');
   elTimer.innerText = txt;
+}
+
+// undo last change---------------------------------------------------------------------------------
+function undoChange() {
+  if (gHistoryEnable && gHistoryModel.length) {
+    gBoard = gHistoryModel.pop();
+    document.querySelector('.game-container').innerHTML = gHistoryDOM.pop();
+    gGame = { ...gHistoryGameParm.pop() };
+    if (!gTimerInervalId) gTimerInervalId = setInterval(timer, 1000);
+
+    //prevent multiple clicks that create unknown behivior
+    gHistoryEnable = false;
+    gInProgressTmo = setTimeout(() => {
+      gHistoryEnable = true;
+    }, H_INPROGRESS_TIME);
+  }
 }

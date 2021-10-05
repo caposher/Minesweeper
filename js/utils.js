@@ -85,3 +85,15 @@ function getCoveredLocation() {
   }
   return location;
 }
+
+//duplicate matrix----------------------------------------------------------------
+function duplicateMat(mat) {
+  var newBoard = [];
+  for (var i = 0; i < mat.length; i++) {
+    newBoard[i] = [];
+    for (var j = 0; j < mat.length; j++) {
+      newBoard[i][j] = { ...mat[i][j] };
+    }
+  }
+  return newBoard;
+}

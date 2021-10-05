@@ -79,6 +79,13 @@ button:hover {
   background-color: hsl(216, 97%, 45%);
 }
 
+.undo-click {
+  background-color: hsl(313, 97%, 62%);
+}
+.undo-click:active {
+  background-color: hsl(313, 97%, 45%);
+}
+
 .smiley {
   width: 30px;
   display: inline-block;
