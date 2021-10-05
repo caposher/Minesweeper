@@ -24,8 +24,6 @@ const HINT_TIME = 1000;
 //initialize the game--------------------------------------------------------------------------------
 function init() {
   gBoard = generateBoard(gLevel.size);
-  setMinesOnBoard(gLevel.mines);
-  updateNeighborsCount();
   renderBoard(gBoard, '.board-container');
   gGame.isOn = true;
 }
@@ -74,10 +72,10 @@ function generateBoard(boardSize) {
 }
 
 //put mines on board--------------------------------------------------------------------------------
-function setMinesOnBoard(mineAmount) {
+function setMinesOnBoard(mineAmount, location) {
   for (var i = 0; i < mineAmount; i++) {
     var randLoc = getRandomLocation(gLevel.size);
-    while (gBoard[randLoc.i][randLoc.j].isMine) {
+    while (gBoard[randLoc.i][randLoc.j].isMine || (location.i === randLoc.i && location.j === randLoc.j)) {
       //find empty location to put mine
       randLoc = getRandomLocation(gLevel.size);
     }
@@ -115,6 +113,11 @@ function countNeighbors(location, matLen) {
 //handle cell left click------------------------------------------------------------------------------
 function cellClick(ev, elCell, location) {
   if (gGame.isOn && !gTimerInervalId) {
+    //first time job
+    setMinesOnBoard(gLevel.mines, location);
+    updateNeighborsCount();
+    renderBoard(gBoard, '.board-container');
+    elCell = document.querySelector(`.${elCell.classList[0]}`); //update cell element
     gTimerInervalId = setInterval(timer, 1000);
   }
   if (gGame.isOn) {
@@ -122,6 +125,7 @@ function cellClick(ev, elCell, location) {
     //identify mouse button
     switch (ev.which) {
       case 1: {
+        //left click
         if (!currCell.isMarked) {
           if (currCell.isHint) {
             showHint(location);
@@ -228,66 +232,4 @@ function timer() {
   var txt = `${gGame.secsPassed}`.padStart(3, '0');
   var elTimer = document.querySelector('.timer');
   elTimer.innerText = txt;
-}
-
-//handle logic hor hint------------------------------------------------------------------------------
-function hintClick(elImg) {
-  if (!elImg.classList.contains('used')) {
-    elImg.classList.add('used');
-    elImg.src = 'img/usedHint.png';
-    var hintLocation = getHintLocation();
-    gBoard[hintLocation.i][hintLocation.j].isHint = true;
-    document.querySelector(`.cell${hintLocation.i}-${hintLocation.j}`).classList.add('hint-cell');
-  }
-}
-
-//find cell contain mine------------------------------------------------------------------------------
-function getHintLocation() {
-  var location = getRandomLocation(gLevel.size);
-  var cell = gBoard[location.i][location.j];
-  var boardSize = gLevel.size ** 2;
-
-  for (var k = 0; k < boardSize && cell.isShown; k++) {
-    location = getRandomLocation(gLevel.size);
-    cell = gBoard[location.i][location.j];
-  }
-  return location;
-}
-
-//clear hints imgs-------------------------------------------------------------------------------------
-function clearHintSymbols() {
-  var elHints = document.querySelectorAll('.hint-img');
-  for (var i = 0; i < elHints.length; i++) {
-    elHints[i].src = 'img/unusedHint.png';
-    elHints[i].classList.remove('used');
-  }
-}
-
-//show hint cells---------------------------------------------------------------------------------------
-function showHint(location) {
-  var LastStatus = [];
-  for (var i = location.i - 1; i <= location.i + 1; i++) {
-    for (var j = location.j - 1; j <= location.j + 1; j++) {
-      if (0 <= i && i < gLevel.size && 0 <= j && j < gLevel.size) {
-        LastStatus.push(gBoard[i][j].isShown);
-        gBoard[i][j].isShown = true;
-        document.querySelector(`.cell${i}-${j}`).classList.add('show');
-      }
-    }
-  }
-
-  setTimeout(hideHint, HINT_TIME, location, LastStatus);
-}
-
-function hideHint(location, lastStatus) {
-  for (var i = location.i - 1; i <= location.i + 1; i++) {
-    for (var j = location.j - 1; j <= location.j + 1; j++) {
-      if (0 <= i && i < gLevel.size && 0 <= j && j < gLevel.size) {
-        gBoard[i][j].isShown = lastStatus.shift();
-        document.querySelector(`.cell${i}-${j}`).classList.remove('show');
-      }
-    }
-  }
-  gBoard[location.i][location.j].isHint = false;
-  document.querySelector(`.cell${location.i}-${location.j}`).classList.remove('hint-cell');
 }

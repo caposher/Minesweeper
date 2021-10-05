@@ -1,16 +1,16 @@
 'use strict';
 
-function renderBoard(mat, selector) {
-  var strHTML = '<table ><tbody>';
-  for (var i = 0; i < mat.length; i++) {
+function renderBoard(board, selector) {
+  var strHTML = '<table class="board"><tbody>';
+  for (var i = 0; i < board.length; i++) {
     strHTML += '<tr>';
-    for (var j = 0; j < mat[0].length; j++) {
+    for (var j = 0; j < board[0].length; j++) {
       //create cell
       var className = `cell${i}-${j}`;
       strHTML += `<td oncontextmenu="return false;">
       <div class="${className} cover " onMouseup="cellClick(event,this,{i:${i},j:${j}})" oncontextmenu="return false;"></div>`;
 
-      var cell = mat[i][j];
+      var cell = board[i][j];
       if (cell.isMine) {
         strHTML += MINE;
       } else if (cell.minesAroundCount !== 0) {
