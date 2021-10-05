@@ -2,6 +2,7 @@
 var gLevel = {
   size: 4,
   mines: 2,
+  emptyCellAmount: 14,
 };
 
 var gGame = {
@@ -9,7 +10,6 @@ var gGame = {
   lifes: 3,
   shownCount: 0,
   markedCount: 0,
-  emptyCellAmount: gLevel.size ** 2 - gLevel.mines,
   secsPassed: 0,
 };
 
@@ -41,6 +41,7 @@ function resetGame(elDifficalty) {
     var diffVals = elDifficalty.value.split('-');
     gLevel.size = +diffVals[0];
     gLevel.mines = +diffVals[1];
+    gLevel.emptyCellAmount = gLevel.size ** 2 - gLevel.mines;
   }
 
   clearInterval(gTimerInervalId);
@@ -115,15 +116,16 @@ function cellClick(ev, elCell, location) {
     //identify mouse button
     switch (ev.which) {
       case 1: {
-        if (currCell.minesAroundCount === 0 && !currCell.isMine) {
-          recurseOpening(location);
-        } else if (currCell.isMine) {
-          removeLife(currCell);
-        } else {
-          gGame.shownCount++;
+        if (!currCell.isMarked) {
+          if (currCell.isMine) {
+            removeLife();
+            showCell(elCell, location);
+          } else if (currCell.minesAroundCount === 0) {
+            recurseOpening(location);
+          } else {
+            showCell(elCell, location);
+          }
         }
-        currCell.isShown = true;
-        elCell.classList.add('show');
         break;
       }
       case 3: {
@@ -143,7 +145,10 @@ function checkEndGame() {
   if (gGame.lifes === 0) {
     //lose
     endGame('loss');
-  } else if (gGame.markedCount === gLevel.mines && gGame.shownCount === gGame.emptyCellAmount) {
+  } else if (
+    (gGame.markedCount === gLevel.mines && gGame.shownCount === gLevel.emptyCellAmount) ||
+    gGame.shownCount + gGame.markedCount === gLevel.size ** 2
+  ) {
     //win
     endGame('win');
   }
@@ -161,9 +166,7 @@ function endGame(text) {
 //open all empty cells, recursive-------------------------------------------------------------------
 function recurseOpening(location) {
   var cell = document.querySelector(`.cell${location.i}-${location.j}`);
-  cell.classList.add('show');
-  gBoard[location.i][location.j].isShown = true;
-  gGame.shownCount++;
+  showCell(cell, location);
 
   //stop condition
   if (gBoard[location.i][location.j].minesAroundCount) {
@@ -184,20 +187,23 @@ function recurseOpening(location) {
 //toggle flag on cell------------------------------------------------------------------------------
 function toggleFlag(elCell, bCell) {
   if (!elCell.innerHTML) {
+    if (bCell.isMine) {
+      gGame.markedCount++;
+    }
     elCell.innerHTML = `<p>${FLAG}<p>`;
-    gGame.markedCount++;
     bCell.isMarked = true;
   } else {
+    if (bCell.isMine) {
+      gGame.markedCount--;
+    }
     elCell.innerHTML = ``;
-    gGame.markedCount--;
     bCell.isMarked = false;
   }
 }
 
 //show cell----------------------------------------------------------------------------------------
-function showCell(elCell, bCell) {
-  //TODO fix
-  bCell.isShown = true;
+function showCell(elCell, location) {
+  gBoard[location.i][location.j].isShown = true;
   gGame.shownCount++;
   elCell.classList.add('show');
 }
@@ -206,9 +212,6 @@ function showCell(elCell, bCell) {
 function removeLife(cell) {
   //TODO fix
   gGame.lifes--;
-  gGame.shownCount--;
-  gGame.markedCount++;
-  cell.isMarked = true;
 }
 
 //timer --------------------------------------------------------------------------------------------
