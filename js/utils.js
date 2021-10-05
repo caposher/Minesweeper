@@ -6,16 +6,22 @@ function renderBoard(board, selector) {
     strHTML += '<tr>';
     for (var j = 0; j < board[0].length; j++) {
       //create cell
-      var className = `cell${i}-${j}`;
-      strHTML += `<td oncontextmenu="return false;">
-      <div class="${className} cover " onMouseup="cellClick(event,this,{i:${i},j:${j}})" oncontextmenu="return false;"></div>`;
 
       var cell = board[i][j];
+      var mineClass = '';
+      var innerTxt = '';
       if (cell.isMine) {
-        strHTML += MINE;
+        mineClass = 'mine';
+        innerTxt = MINE;
       } else if (cell.minesAroundCount !== 0) {
-        strHTML += cell.minesAroundCount;
+        innerTxt += cell.minesAroundCount;
       }
+
+      var className = `cell${i}-${j}`;
+      strHTML += `<td class="${mineClass}" oncontextmenu="return false;">
+      <div class="${className}  cover " onMouseup="cellClick(event,this,{i:${i},j:${j}})" oncontextmenu="return false;"></div>`;
+      strHTML += innerTxt;
+
       strHTML += `</td>`;
     }
     strHTML += '</tr>';

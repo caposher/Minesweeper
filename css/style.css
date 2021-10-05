@@ -2,16 +2,19 @@
   box-sizing: border-box;
 }
 
+body {
+  background-color: hsl(271, 56%, 95%);
+}
 .game-container {
   background-color: hsl(271, 76%, 53%);
   text-align: center;
   margin: auto;
-  margin-top: 60px;
+  margin-top: 50px;
   padding: 20px;
   padding-bottom: 40px;
   width: 600px;
   border-radius: 15px;
-  box-shadow: 10px 10px 15px;
+  box-shadow: 10px 10px 20px;
 }
 
 .score-text {
@@ -27,7 +30,7 @@
   font-weight: bold;
   text-decoration: underline hsl(15, 100%, 50%);
   margin-bottom: 10px;
-  margin-top: 30px;
+  margin-top: 15px;
 }
 
 .smiley {
@@ -80,11 +83,17 @@
   height: 40px;
   background-color: hsl(240, 100%, 87%);
   position: relative;
-  border-width: 0px;
+}
+
+.mine {
+  background-image: url('../img/explosion.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 30px;
 }
 
 .cover {
-  background-color: hsla(34, 100%, 50%, 0.459);
+  background-color: hsl(34, 100%, 50%);
   box-shadow: inset 0px 0px 5px 0px hsl(19, 100%, 10%);
   position: absolute;
   margin: unset;
@@ -111,7 +120,9 @@
 
 .hint-cell {
   background-color: hsl(15, 100%, 50%);
-  background-image: url('img/unusedHint.png');
+  background-image: url('../img/unusedHint.png');
+  background-size: 20px;
+  background-repeat: no-repeat;
   background-position: center;
   background-repeat: none;
   z-index: 2;

@@ -17,7 +17,7 @@ var gBoard = null;
 var gTimerInervalId = null;
 
 const MINE = '💣';
-const FLAG = '🚩';
+const FLAG = '🏴';
 const EMPTY = ' ';
 const HINT_TIME = 1000;
 
