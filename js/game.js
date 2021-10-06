@@ -157,6 +157,7 @@ function cellClick(ev, elCell, location) {
       }
       updateNeighborsCount();
       renderBoard(gBoard, '.board-container');
+      elCell = document.querySelector(`.${elCell.classList[0]}`); //refresh cell element
       gTimerInervalId = setInterval(timer, 1000);
     }
 
