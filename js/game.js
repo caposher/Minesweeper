@@ -1,5 +1,8 @@
 'use strict';
 
+//FIXME: hint mechanism is wrong and history not recover hint all the time.
+//  after click hint and choose location then do hint and remove
+
 //TODO: try to reduce history memory by saving the diff and not the whole board and DOM
 //TODO: try to reduce duplicate of renderCell and renderBoard. using similar code
 //TODO: check how you can add neighbors work function for code generalization and avoid duplication

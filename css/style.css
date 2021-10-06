@@ -112,7 +112,7 @@ button:hover {
 
 .smiley:active {
   background-color: hsl(271, 46%, 43%);
-  border: 1px solid hsl(271, 76%, 43%);
+  border: 2px solid hsl(271, 76%, 23%);
   border-radius: 40%;
 }
 
