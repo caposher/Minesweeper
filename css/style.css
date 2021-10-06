@@ -3,8 +3,10 @@
 }
 
 body {
-  background-color: hsl(271, 56%, 95%);
+  background-color: hsl(226, 93%, 83%);
 }
+
+/*main block----------------------------------- */
 .game-container {
   background-color: hsl(271, 76%, 53%);
   text-align: center;
@@ -17,40 +19,27 @@ body {
   box-shadow: 10px 10px 20px;
 }
 
+/*score ---------------------------------------------- */
 .score-text {
+  float: left;
   text-align: left;
   font-family: sans-serif;
   font-weight: bold;
   margin: unset;
 }
 
+/*title ---------------------------------------------- */
 .game-container h1 {
+  display: block;
   font-size: 65px;
   font-family: sans-serif;
   font-weight: bold;
   text-decoration: underline hsl(15, 100%, 50%);
   margin-bottom: 10px;
-  margin-top: 15px;
+  margin-top: 60px;
 }
 
-.top-list-container {
-  list-style: none;
-  display: inline-block;
-  padding: 5px 5px;
-  margin: unset;
-  margin-top: 10px;
-}
-
-.top-list-container li {
-  float: left;
-  /* border: 1px solid black; */
-  height: 35px;
-  width: 100px;
-}
-
-.top-list-container li p {
-  margin: unset;
-}
+/*difficulty input------------------------------------- */
 label {
   font-size: 13px;
   font-family: system-ui;
@@ -58,6 +47,28 @@ label {
   margin-right: 5px;
 }
 
+/*main button list------------------------------------- */
+.game-list {
+  list-style: none;
+  display: inline-block;
+  padding: 5px 5px;
+  margin: unset;
+  margin-top: 10px;
+}
+.game-list li {
+  float: left;
+}
+
+.game-list li {
+  height: 35px;
+  width: 100px;
+}
+
+.game-list li p {
+  margin: unset;
+}
+
+/*all buttons -------------------------------------------- */
 button {
   width: 100px;
   padding: 6px;
@@ -72,6 +83,7 @@ button:hover {
   box-shadow: inset 0px 0px 5px 1px hsl(19, 100%, 90%);
 }
 
+/* safe button-------- */
 .safe-click {
   background-color: hsl(216, 97%, 62%);
 }
@@ -79,6 +91,7 @@ button:hover {
   background-color: hsl(216, 97%, 45%);
 }
 
+/* undo button-------- */
 .undo-click {
   background-color: hsl(313, 97%, 62%);
 }
@@ -86,6 +99,7 @@ button:hover {
   background-color: hsl(313, 97%, 45%);
 }
 
+/* smiley button-------- */
 .smiley {
   width: 30px;
   display: inline-block;
@@ -102,12 +116,14 @@ button:hover {
   border-radius: 40%;
 }
 
+/*lifes ---------------------------------------------- */
 .heart {
   width: 15px;
   text-align: center;
   margin-bottom: 3px;
 }
 
+/*timer ---------------------------------------------- */
 .game-container h3 {
   margin-top: -3px;
   margin-bottom: 5px;
@@ -115,6 +131,7 @@ button:hover {
   font-size: 25px;
 }
 
+/*board---------------------------------------------- */
 .board-container {
   display: inline-block;
   margin: 0 auto;
@@ -122,6 +139,7 @@ button:hover {
   border-radius: 5px;
 }
 
+/* board-------- */
 .board-container table {
   border: 3px solid hsl(34, 100%, 50%);
   border-radius: 5px;
@@ -138,6 +156,7 @@ button:hover {
   position: relative;
 }
 
+/*mine -------- */
 .mine {
   background-image: url('../img/explosion.png');
   background-position: center;
@@ -145,6 +164,7 @@ button:hover {
   background-size: 30px;
 }
 
+/*cover -------- */
 .cover {
   background-color: hsl(34, 100%, 50%);
   box-shadow: inset 0px 0px 5px 0px hsl(19, 100%, 10%);
@@ -165,6 +185,7 @@ button:hover {
   margin-left: 5px;
 }
 
+/*hint -------- */
 .hint-img {
   width: 40px;
   margin-top: 10px;
@@ -181,6 +202,7 @@ button:hover {
   z-index: 2;
 }
 
+/*safe click -------- */
 .safe-cell {
   background-color: hsl(216, 97%, 62%);
   background-image: url('../img/safe.png');
@@ -190,6 +212,82 @@ button:hover {
   background-repeat: none;
   z-index: 2;
 }
+
+/*display -------- */
 .show {
   display: none;
+}
+
+/*------ -------- */
+.modes-list {
+  float: right;
+  display: block;
+  /* border: 1px black solid; */
+  margin: auto;
+  list-style: none;
+  margin-top: -15px;
+}
+.modes-list li {
+  /* float: left; */
+  padding: 10px;
+  /* border: 1px black solid; */
+  width: 190px;
+  height: 30px;
+}
+
+.manual-text {
+  float: left;
+  margin: 0 auto;
+  font-family: system-ui;
+  margin-left: 20px;
+  margin-right: 5px;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.boom-text {
+  float: left;
+  margin: 0 auto;
+  font-family: system-ui;
+  margin-left: 20px;
+  margin-right: 43px;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.switch {
+  background-color: hsl(271, 46%, 33%);
+  cursor: pointer;
+  width: 10px;
+  height: 10px;
+  padding-left: 15px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  position: relative;
+  border-radius: 5px;
+  border: 1px solid hsl(271, 46%, 33%);
+}
+.switch input {
+  opacity: 0;
+}
+
+.slider {
+  background-color: hsl(271, 46%, 13%);
+  cursor: pointer;
+  position: absolute;
+  width: 10px;
+  top: 4px;
+  left: 21px;
+  height: 10px;
+  transition: 0.3s;
+  border-radius: 30%;
+}
+.switch:hover {
+  background-color: hsl(253, 46%, 40%);
+  border: 1px solid hsl(271, 46%, 40%);
+}
+
+input:checked + .slider {
+  transform: translateX(-17px);
+  background-color: hsl(34, 100%, 50%);
 }

@@ -287,3 +287,7 @@ function undoChange() {
     }, H_INPROGRESS_TIME);
   }
 }
+
+function text(elInput) {
+  // debugger;
+}

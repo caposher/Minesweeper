@@ -10,13 +10,23 @@
   <body onload="init()">
     <div class="game-container">
       <p class="score-text">Best Time: <span class="score">000</span></p>
+      <ul class="modes-list">
+        <li>
+          <label class="switch"> <input type="checkbox" onclick="text(this)" /> <span class="slider"></span> </label>
+          <p class="manual-text">Manual Mode</p>
+        </li>
+        <li>
+          <label class="switch"><input type="checkbox" /> <span class="slider"></span> </label>
+          <p class="boom-text">7 Boom!</p>
+        </li>
+      </ul>
       <h1>💣Mine Blowing</h1>
       <label>
         <input checked="true" type="radio" name="difficult" value="4-2" onclick="resetGame(this)" />Begginer</label
       >
       <label> <input type="radio" name="difficult" value="8-12" onclick="resetGame(this)" />Medium</label>
       <label> <input type="radio" name="difficult" value="12-30" onclick="resetGame(this)" />Expert</label><br />
-      <ul class="top-list-container">
+      <ul class="game-list">
         <li>
           <button class="safe-click" onclick="safeClick()">Safe Click [<span class="safe-num">3</span>]</button>
         </li>
@@ -39,6 +49,8 @@
       <img class="hint-img" src="img/unusedHint.png" onclick="hintClick(this)" />
       <img class="hint-img" src="img/unusedHint.png" onclick="hintClick(this)" />
       <img class="hint-img" src="img/unusedHint.png" onclick="hintClick(this)" />
+      <br />
+
       <script src="js/utils.js"></script>
       <script src="js/hint.js"></script>
       <script src="js/safeClick.js"></script>
