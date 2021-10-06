@@ -66,7 +66,8 @@ function getRandomLocation(length) {
 //save best time score --------------------------------------------------------------
 function saveBestScore() {
   var gameTime = +document.querySelector('.timer').innerText;
-  var bestScore = localStorage.getItem('score') ? +localStorage.getItem('score') : Infinity;
+  var bestTime = +localStorage.getItem('score');
+  var bestScore = bestTime ? bestTime : Infinity;
   if (bestScore > gameTime) {
     localStorage.setItem('score', gameTime);
     renderBestScore();
