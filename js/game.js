@@ -1,4 +1,12 @@
 'use strict';
+
+//TODO: try to reduce history memory by saving the diff and not the whole board and DOM
+//TODO: try to reduce duplicate of renderCell and renderBoard. using similar code
+//TODO: check how you can add neighbors work function for code generalization and avoid duplication
+//TODO: move code segments to different files
+//TODO: sound effects (?)
+//TODO: choose better colors (?)
+
 var gLevel = {
   size: 4,
   mines: 2,
@@ -22,14 +30,12 @@ var gBoard = null;
 var gHistoryModel = [];
 var gHistoryDOM = [];
 var gHistoryGameParm = [];
-var gHistoryEnable = true;
 
 const MINE = '💣';
 const FLAG = '🏴';
 const EMPTY = ' ';
 const HINT_TIME = 1000;
 const SAFE_TIME = 3000;
-const H_INPROGRESS_TIME = 100;
 
 //initialize the game--------------------------------------------------------------------------------
 function init() {
@@ -58,6 +64,7 @@ function resetGame(elDifficalty) {
   resetModes();
 
   if (elDifficalty) {
+    //save difficalty parameters
     var diffVals = elDifficalty.value.split('-');
     gLevel.size = +diffVals[0];
     gLevel.mines = +diffVals[1];
@@ -68,7 +75,6 @@ function resetGame(elDifficalty) {
   gTimerInervalId = null;
   clearTimeout(gInProgressTmo);
   gInProgressTmo = null;
-  gHistoryEnable = true;
 
   init();
 }
@@ -126,7 +132,6 @@ function countNeighbors(location, matLen) {
     for (var j = location.j - 1; j <= location.j + 1; j++) {
       if (0 <= i && i < matLen && 0 <= j && j < matLen && gBoard[i][j].isMine) {
         //the location is valid and contain mine
-
         if (location.i !== i || location.j !== j) {
           //count only neighbors ignore the center location itself
           neighborsCount++;
@@ -137,7 +142,7 @@ function countNeighbors(location, matLen) {
   return neighborsCount;
 }
 
-//handle cell left click------------------------------------------------------------------------------
+//handle cell click------------------------------------------------------------------------------
 function cellClick(ev, elCell, location) {
   if (gGame.isManual && gIsMineSet) {
     //manual mode
@@ -152,16 +157,14 @@ function cellClick(ev, elCell, location) {
       }
       updateNeighborsCount();
       renderBoard(gBoard, '.board-container');
-      elCell = document.querySelector(`.${elCell.classList[0]}`); //update cell element
       gTimerInervalId = setInterval(timer, 1000);
     }
 
     if (gGame.isOn) {
-      //save history
       saveHistory();
+      var currCell = gBoard[location.i][location.j];
 
       //identify mouse button
-      var currCell = gBoard[location.i][location.j];
       switch (ev.which) {
         case 1: {
           //left click
@@ -285,17 +288,11 @@ function timer() {
 
 // undo last change---------------------------------------------------------------------------------
 function undoChange() {
-  if (gHistoryEnable && gHistoryModel.length) {
+  if (gHistoryModel.length) {
     gBoard = gHistoryModel.pop();
     document.querySelector('.history-container').innerHTML = gHistoryDOM.pop();
-    gGame = { ...gHistoryGameParm.pop() };
+    gGame = gHistoryGameParm.pop();
     if (!gTimerInervalId) gTimerInervalId = setInterval(timer, 1000);
-
-    //prevent multiple clicks that create unknown behivior
-    gHistoryEnable = false;
-    gInProgressTmo = setTimeout(() => {
-      gHistoryEnable = true;
-    }, H_INPROGRESS_TIME);
   }
 }
 

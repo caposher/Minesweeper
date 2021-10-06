@@ -295,7 +295,7 @@ input:checked + .slider {
   box-shadow: 0px 0px 20px 1px hsl(41, 100%, 90%);
 }
 
-/*  */
+/* footer-------------------------------------------------------------------- */
 footer {
   color: hsl(41, 50%, 80%);
   text-align: center;

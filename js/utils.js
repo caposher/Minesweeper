@@ -7,6 +7,7 @@ function renderBoard(board, selector) {
     for (var j = 0; j < board[0].length; j++) {
       //create cell
       var cell = board[i][j];
+
       var mineClass = '';
       var innerTxt = '';
       if (cell.isMine) {
@@ -68,6 +69,7 @@ function saveBestScore() {
   var gameTime = +document.querySelector('.timer').innerText;
   var bestTime = +localStorage.getItem('score');
   var bestScore = bestTime ? bestTime : Infinity;
+
   if (bestScore > gameTime) {
     localStorage.setItem('score', gameTime);
     renderBestScore();
@@ -84,7 +86,7 @@ function renderBestScore() {
   }
 }
 
-//clear DOM  imgs-----------------------------------------------------------------------
+//clear DOM elements-----------------------------------------------------------------------
 function clearDomElements() {
   var elHints = document.querySelectorAll('.hint-img');
   var elHearts = document.querySelectorAll('.heart');
@@ -96,7 +98,7 @@ function clearDomElements() {
   }
 }
 
-//find covered cell ------------------------------------------------------------------------------
+//find covered cells ------------------------------------------------------------------------------
 function getCoveredLocation() {
   var location = getRandomLocation(gLevel.size);
   var cell = gBoard[location.i][location.j];
