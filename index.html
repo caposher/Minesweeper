@@ -12,13 +12,15 @@
       <p class="score-text">Best Time: <span class="score">000</span></p>
       <ul class="modes-list">
         <li>
-          <label class="switch">
+          <label class="switch maunalMode">
             <input type="checkbox" onclick="manualMode(this)" /> <span class="slider"></span>
           </label>
           <p class="manual-text">Manual Mode</p>
         </li>
         <li>
-          <label class="switch"><input type="checkbox" /> <span class="slider"></span> </label>
+          <label class="switch boom7Mode"
+            ><input type="checkbox" onclick="boom7Mode(this)" /> <span class="slider"></span>
+          </label>
           <p class="boom-text">7 Boom!</p>
         </li>
       </ul>
@@ -28,36 +30,39 @@
       >
       <label> <input type="radio" name="difficult" value="8-12" onclick="resetGame(this)" />Medium</label>
       <label> <input type="radio" name="difficult" value="12-30" onclick="resetGame(this)" />Expert</label><br />
-      <ul class="game-list">
-        <li>
-          <button class="safe-click" onclick="safeClick()">Safe Click [<span class="safe-num">3</span>]</button>
-        </li>
-        <li>
-          <img class="smiley" src="img/start.png" onclick="resetGame()" />
-        </li>
-        <li>
-          <button class="undo-click" onclick="undoChange()">Todo Undo</button>
-        </li>
-      </ul>
-      <br />
-      <img class="heart" src="img/heartActive.png" />
-      <img class="heart" src="img/heartActive.png" />
-      <img class="heart" src="img/heartActive.png" />
-      <h3>
-        <span class="timer">000</span>
-      </h3>
-      <div class="board-container"></div>
-      <br />
-      <img class="hint-img" src="img/unusedHint.png" onclick="hintClick(this)" />
-      <img class="hint-img" src="img/unusedHint.png" onclick="hintClick(this)" />
-      <img class="hint-img" src="img/unusedHint.png" onclick="hintClick(this)" />
-      <br />
-
-      <script src="js/utils.js"></script>
-      <script src="js/hint.js"></script>
-      <script src="js/safeClick.js"></script>
-      <script src="js/modes.js"></script>
-      <script src="js/game.js"></script>
+      <div class="history-container">
+        <ul class="game-list">
+          <li>
+            <button class="safe-click" onclick="safeClick()">Safe Click [<span class="safe-num">3</span>]</button>
+          </li>
+          <li>
+            <img class="smiley" src="img/start.png" onclick="resetGame()" />
+          </li>
+          <li>
+            <button class="undo-click" onclick="undoChange()">Todo Undo</button>
+          </li>
+        </ul>
+        <br />
+        <img class="heart" src="img/heartActive.png" />
+        <img class="heart" src="img/heartActive.png" />
+        <img class="heart" src="img/heartActive.png" />
+        <h3>
+          <span class="timer">000</span>
+        </h3>
+        <div class="board-container"></div>
+        <br />
+        <img class="hint-img" src="img/unusedHint.png" onclick="hintClick(this)" />
+        <img class="hint-img" src="img/unusedHint.png" onclick="hintClick(this)" />
+        <img class="hint-img" src="img/unusedHint.png" onclick="hintClick(this)" />
+        <br />
+      </div>
+      <footer>☕ LeftCoffe Osher Cappelli</footer>
     </div>
+    <script src="js/utils.js"></script>
+    <script src="js/hint.js"></script>
+    <script src="js/safeClick.js"></script>
+    <script src="js/manualMode.js"></script>
+    <script src="js/boom7Mode.js"></script>
+    <script src="js/game.js"></script>
   </body>
 </html>

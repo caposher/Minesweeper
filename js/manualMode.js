@@ -12,6 +12,8 @@ function resetModes() {
 // rise manual flag ----------------------------------------------
 function manualMode(elCheckBox) {
   gGame.isManual = elCheckBox.checked;
+  gGame.is7Boom = false;
+  document.querySelector('.boom7Mode input').checked = false;
   resetGame();
 }
 

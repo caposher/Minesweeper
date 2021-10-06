@@ -8,6 +8,7 @@ var gLevel = {
 var gGame = {
   isOn: false,
   isManual: false,
+  is7Boom: false,
   lifes: 3,
   safeLocation: 3,
   shownCount: 0,
@@ -144,20 +145,23 @@ function cellClick(ev, elCell, location) {
   } else {
     if (gGame.isOn && !gTimerInervalId) {
       //first time job
-      if (!gGame.isManual) setMinesOnBoard(gLevel.mines, location);
+      if (gGame.is7Boom) {
+        create7BoomMines();
+      } else if (!gGame.isManual) {
+        setMinesOnBoard(gLevel.mines, location);
+      }
       updateNeighborsCount();
       renderBoard(gBoard, '.board-container');
       elCell = document.querySelector(`.${elCell.classList[0]}`); //update cell element
       gTimerInervalId = setInterval(timer, 1000);
     }
+
     if (gGame.isOn) {
       //save history
-      gHistoryModel.push(duplicateMat(gBoard));
-      gHistoryDOM.push(document.querySelector('.game-container').innerHTML);
-      gHistoryGameParm.push({ ...gGame });
+      saveHistory();
 
-      var currCell = gBoard[location.i][location.j];
       //identify mouse button
+      var currCell = gBoard[location.i][location.j];
       switch (ev.which) {
         case 1: {
           //left click
@@ -283,7 +287,7 @@ function timer() {
 function undoChange() {
   if (gHistoryEnable && gHistoryModel.length) {
     gBoard = gHistoryModel.pop();
-    document.querySelector('.game-container').innerHTML = gHistoryDOM.pop();
+    document.querySelector('.history-container').innerHTML = gHistoryDOM.pop();
     gGame = { ...gHistoryGameParm.pop() };
     if (!gTimerInervalId) gTimerInervalId = setInterval(timer, 1000);
 
@@ -293,4 +297,11 @@ function undoChange() {
       gHistoryEnable = true;
     }, H_INPROGRESS_TIME);
   }
+}
+
+// save board and DOM element to history array---------------------------------------------------------------------------------
+function saveHistory() {
+  gHistoryModel.push(duplicateMat(gBoard));
+  gHistoryDOM.push(document.querySelector('.history-container').innerHTML);
+  gHistoryGameParm.push({ ...gGame });
 }

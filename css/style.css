@@ -222,19 +222,16 @@ button:hover {
   display: none;
 }
 
-/*------ -------- */
+/*switchs------------------------------------------- */
 .modes-list {
   float: right;
   display: block;
-  /* border: 1px black solid; */
   margin: auto;
   list-style: none;
   margin-top: -15px;
 }
 .modes-list li {
-  /* float: left; */
   padding: 10px;
-  /* border: 1px black solid; */
   width: 190px;
   height: 30px;
 }
@@ -293,7 +290,19 @@ button:hover {
 
 input:checked + .slider {
   transform: translateX(-17px);
-  background-color: hsl(0, 100%, 50%);
+  background-color: hsl(15, 100%, 50%);
 
   box-shadow: 0px 0px 20px 1px hsl(41, 100%, 90%);
+}
+
+/*  */
+footer {
+  color: hsl(41, 50%, 80%);
+  text-align: center;
+  font-family: system-ui;
+  font-size: 12px;
+  font-weight: bold;
+  text-shadow: 5px 5px 20px black;
+  margin-top: 22px;
+  margin-bottom: -25px;
 }
