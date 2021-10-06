@@ -7,6 +7,7 @@ var gLevel = {
 
 var gGame = {
   isOn: false,
+  isManual: false,
   lifes: 3,
   safeLocation: 3,
   shownCount: 0,
@@ -53,6 +54,7 @@ function resetGame(elDifficalty) {
   document.querySelector('.timer').innerText = '000';
   document.querySelector('.smiley').src = 'img/start.png';
   clearDomElements();
+  resetModes();
 
   if (elDifficalty) {
     var diffVals = elDifficalty.value.split('-');
@@ -136,48 +138,53 @@ function countNeighbors(location, matLen) {
 
 //handle cell left click------------------------------------------------------------------------------
 function cellClick(ev, elCell, location) {
-  if (gGame.isOn && !gTimerInervalId) {
-    //first time job
-    setMinesOnBoard(gLevel.mines, location);
-    updateNeighborsCount();
-    renderBoard(gBoard, '.board-container');
-    elCell = document.querySelector(`.${elCell.classList[0]}`); //update cell element
-    gTimerInervalId = setInterval(timer, 1000);
-  }
-  if (gGame.isOn) {
-    //save history
-    gHistoryModel.push(duplicateMat(gBoard));
-    gHistoryDOM.push(document.querySelector('.game-container').innerHTML);
-    gHistoryGameParm.push({ ...gGame });
-
-    var currCell = gBoard[location.i][location.j];
-    //identify mouse button
-    switch (ev.which) {
-      case 1: {
-        //left click
-        if (!currCell.isMarked) {
-          if (currCell.isHint) {
-            showHint(location);
-          } else if (currCell.isMine) {
-            removeLife();
-            showCell(elCell, location);
-          } else if (currCell.minesAroundCount === 0) {
-            recurseOpening(location);
-          } else {
-            showCell(elCell, location);
-          }
-        }
-        break;
-      }
-      case 3: {
-        //right click
-        toggleFlag(elCell, currCell);
-        break;
-      }
-      default:
-        console.log('unknown event click:', ev.which);
+  if (gGame.isManual && gIsMineSet) {
+    //manual mode
+    setManualMine(location);
+  } else {
+    if (gGame.isOn && !gTimerInervalId) {
+      //first time job
+      if (!gGame.isManual) setMinesOnBoard(gLevel.mines, location);
+      updateNeighborsCount();
+      renderBoard(gBoard, '.board-container');
+      elCell = document.querySelector(`.${elCell.classList[0]}`); //update cell element
+      gTimerInervalId = setInterval(timer, 1000);
     }
-    checkEndGame();
+    if (gGame.isOn) {
+      //save history
+      gHistoryModel.push(duplicateMat(gBoard));
+      gHistoryDOM.push(document.querySelector('.game-container').innerHTML);
+      gHistoryGameParm.push({ ...gGame });
+
+      var currCell = gBoard[location.i][location.j];
+      //identify mouse button
+      switch (ev.which) {
+        case 1: {
+          //left click
+          if (!currCell.isMarked) {
+            if (currCell.isHint) {
+              showHint(location);
+            } else if (currCell.isMine) {
+              removeLife();
+              showCell(elCell, location);
+            } else if (currCell.minesAroundCount === 0) {
+              recurseOpening(location);
+            } else {
+              showCell(elCell, location);
+            }
+          }
+          break;
+        }
+        case 3: {
+          //right click
+          toggleFlag(elCell, currCell);
+          break;
+        }
+        default:
+          console.log('unknown event click:', ev.which);
+      }
+      checkEndGame();
+    }
   }
 }
 
@@ -286,8 +293,4 @@ function undoChange() {
       gHistoryEnable = true;
     }, H_INPROGRESS_TIME);
   }
-}
-
-function text(elInput) {
-  // debugger;
 }

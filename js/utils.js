@@ -6,7 +6,6 @@ function renderBoard(board, selector) {
     strHTML += '<tr>';
     for (var j = 0; j < board[0].length; j++) {
       //create cell
-
       var cell = board[i][j];
       var mineClass = '';
       var innerTxt = '';
@@ -19,7 +18,9 @@ function renderBoard(board, selector) {
 
       var className = `cell${i}-${j}`;
       strHTML += `<td class="${mineClass}" oncontextmenu="return false;">
-      <div class="${className}  cover " onMouseup="cellClick(event,this,{i:${i},j:${j}})" oncontextmenu="return false;"></div>`;
+      <div class="${className} 
+      ${gGame.isManual && gIsMineSet ? 'cover-trans' : ''}
+       cover" onMouseup="cellClick(event,this,{i:${i},j:${j}})" oncontextmenu="return false;"></div>`;
       strHTML += innerTxt;
 
       strHTML += `</td>`;
@@ -29,6 +30,27 @@ function renderBoard(board, selector) {
   strHTML += '</tbody></table>';
   var elContainer = document.querySelector(selector);
   elContainer.innerHTML = strHTML;
+}
+
+function renderCell(board, location, elTableCell) {
+  var cell = board[location.i][location.j];
+  var mineClass = '';
+  var innerTxt = '';
+  var strHTML = '';
+  if (cell.isMine) {
+    mineClass = 'mine';
+    innerTxt = MINE;
+  } else if (cell.minesAroundCount !== 0) {
+    innerTxt += cell.minesAroundCount;
+  }
+
+  var className = `cell${location.i}-${location.j}`;
+  strHTML += ` <div class="${className} 
+  ${gGame.isManual ? 'cover-trans' : ''}
+   cover" onMouseup="cellClick(event,this,{i:${location.i},j:${location.j}})" oncontextmenu="return false;"></div>`;
+  strHTML += innerTxt;
+
+  elTableCell.innerHTML = strHTML;
 }
 
 //generate random integer
